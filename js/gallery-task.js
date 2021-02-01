@@ -19,22 +19,32 @@ galleryList.innerHTML += galleryString;
 
 function openModal (event) {
     event.preventDefault();
-    if (!event.target.classList.contains('gallery__image')) return;
-    const sourceTarget = event.target.dataset.source;
-    modalImageRef.src = sourceTarget;
-    modalImageRef.alt = event.target.alt;
+    window.addEventListener('keydown', onESCPress);
+    const target = event.target;
+    if (!target.classList.contains('gallery__image')) return;
+    
+    modalImageRef.src = target.dataset.source;
+    modalImageRef.alt = target.alt;
 
     modalRef.classList.add('is-open');
 }
 
 function closeModal () {
+    window.removeEventListener('keydown', onESCPress);
     modalImageRef.src = '';
     modalImageRef.alt = '';
+
     modalRef.classList.remove('is-open');
 }
 
 function closeModalViaOverlay (event) {
     if (event.target === event.currentTarget) {
+        closeModal();
+    }
+}
+
+function onESCPress (event) {
+    if(event.code === 'Escape') {
         closeModal();
     }
 }
